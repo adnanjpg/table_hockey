@@ -10,9 +10,10 @@ package TableHockeyServer;
  */
 public class GameModel extends Thread {
 
-    ClientModel a, b;
+    ServerClient a;
+    ServerClient b;
 
-    public GameModel(ClientModel a, ClientModel b) {
+    public GameModel(ServerClient a, ServerClient b) {
         this.a = a;
         this.b = b;
     }

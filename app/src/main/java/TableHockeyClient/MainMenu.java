@@ -20,24 +20,53 @@ public class MainMenu extends javax.swing.JFrame {
      */
     public MainMenu() {
         initComponents();
-        
-        lbl_connection_state.setText("Not connected");
+
+        pnl_connected.setVisible(false);
     }
 
-    static Socket socket = null;
+    static Client client = null;
 
     public void connect() {
 
+        ClientCallbacks callbacks = new ClientCallbacks() {
+            @Override
+            public void setRequestedMatchStatus(boolean b) {
+                String txt;
+
+                if (b) {
+                    txt = "Requested Successfully!!";
+                } else {
+                    txt = "Request Failed!";
+                }
+
+                lbl_request_match_stat.setText(txt);
+            }
+
+            @Override
+            public void disconnect() {
+                lbl_connection_state.setText("Disconnected");
+                pnl_connected.setVisible(false);
+            }
+        };
+
         try {
-            socket = new Socket(getInputIp(), getInputPort());
+
+            Socket socket = new Socket(getInputIp(), getInputPort());
+            client = new Client(socket, callbacks);
             lbl_connection_state.setText(
                     "connected to " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort());
+            pnl_connected.setVisible(true);
         } catch (IOException ex) {
             lbl_connection_state.setText("an error occured..");
+            pnl_connected.setVisible(false);
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
 
         }
+    }
+
+    public void requestMatch() {
+        client.requestMatch();
     }
 
     public String getInputIp() {
@@ -57,13 +86,18 @@ public class MainMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        pnl_main = new javax.swing.JPanel();
+        pnl_connection = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         ipField = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         portField = new javax.swing.JTextField();
         btn_connect = new javax.swing.JButton();
         lbl_connection_state = new javax.swing.JLabel();
+        pnl_connected = new javax.swing.JPanel();
+        pnl_request_match = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        lbl_request_match_stat = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -106,17 +140,19 @@ public class MainMenu extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        lbl_connection_state.setText("No Connection!!");
+
+        javax.swing.GroupLayout pnl_connectionLayout = new javax.swing.GroupLayout(pnl_connection);
+        pnl_connection.setLayout(pnl_connectionLayout);
+        pnl_connectionLayout.setHorizontalGroup(
+            pnl_connectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_connectionLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnl_connectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_connect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(pnl_connectionLayout.createSequentialGroup()
+                        .addGroup(pnl_connectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pnl_connectionLayout.createSequentialGroup()
                                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(ipField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -125,14 +161,14 @@ public class MainMenu extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lbl_connection_state, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 2, Short.MAX_VALUE)))
+                        .addGap(0, 43, Short.MAX_VALUE)))
                 .addContainerGap())
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+        pnl_connectionLayout.setVerticalGroup(
+            pnl_connectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_connectionLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(pnl_connectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(ipField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2)
@@ -141,10 +177,69 @@ public class MainMenu extends javax.swing.JFrame {
                 .addComponent(btn_connect)
                 .addGap(18, 18, 18)
                 .addComponent(lbl_connection_state)
-                .addContainerGap(175, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1);
+        jButton1.setText("Request Match");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        lbl_request_match_stat.setText("Not Requested Yet!!");
+
+        javax.swing.GroupLayout pnl_request_matchLayout = new javax.swing.GroupLayout(pnl_request_match);
+        pnl_request_match.setLayout(pnl_request_matchLayout);
+        pnl_request_matchLayout.setHorizontalGroup(
+            pnl_request_matchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_request_matchLayout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbl_request_match_stat, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pnl_request_matchLayout.setVerticalGroup(
+            pnl_request_matchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_request_matchLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(pnl_request_matchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(lbl_request_match_stat))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnl_connectedLayout = new javax.swing.GroupLayout(pnl_connected);
+        pnl_connected.setLayout(pnl_connectedLayout);
+        pnl_connectedLayout.setHorizontalGroup(
+            pnl_connectedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnl_request_match, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        pnl_connectedLayout.setVerticalGroup(
+            pnl_connectedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_connectedLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(pnl_request_match, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(215, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout pnl_mainLayout = new javax.swing.GroupLayout(pnl_main);
+        pnl_main.setLayout(pnl_mainLayout);
+        pnl_mainLayout.setHorizontalGroup(
+            pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnl_connection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnl_connected, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        pnl_mainLayout.setVerticalGroup(
+            pnl_mainLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnl_mainLayout.createSequentialGroup()
+                .addComponent(pnl_connection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnl_connected, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(pnl_main);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -173,6 +268,11 @@ public class MainMenu extends javax.swing.JFrame {
     private void portFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_portFieldKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_portFieldKeyTyped
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        requestMatch();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -212,10 +312,15 @@ public class MainMenu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_connect;
     private javax.swing.JTextField ipField;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbl_connection_state;
+    private javax.swing.JLabel lbl_request_match_stat;
+    private javax.swing.JPanel pnl_connected;
+    private javax.swing.JPanel pnl_connection;
+    private javax.swing.JPanel pnl_main;
+    private javax.swing.JPanel pnl_request_match;
     private javax.swing.JTextField portField;
     // End of variables declaration//GEN-END:variables
 }

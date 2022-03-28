@@ -2,18 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package TableHockeyServer;
+package TableHockey;
 
 /**
  *
  * @author adnanfahed
  */
-public class App {
-
-    public static void main(String[] args) {
-        Server s = new Server();
-
-        s.startServer();
-      
-    }
+public class StatusCodes {
+    static public String success = "200",notFound = "404";
 }

@@ -19,8 +19,8 @@ public class Server extends Thread {
 
     public ServerSocket serverSocket;
 
-    ArrayList<ClientModel> connectedClients = new ArrayList<>();
-    ClientModel queuedClient;
+    ArrayList<ServerClient> connectedClients = new ArrayList<>();
+    ServerClient queuedClient;
 
     ArrayList<GameModel> ongoingGames = new ArrayList<>();
 
@@ -45,9 +45,9 @@ public class Server extends Thread {
             while (!serverSocket.isClosed()) {
                 Socket s = serverSocket.accept(); //blocking
 
-                ClientModel newClient = new ClientModel(s, new ClientCallbacks() {
+                ServerClient newClient = new ServerClient(s, new ServerClientCallbacks() {
                     @Override
-                    public void requestQueue(ClientModel client) {
+                    public void requestQueue(ServerClient client) {
                         // if the first player reuqests to get in queue,
                         // then assign them to queuedClient
                         if (queuedClient == null) {
@@ -59,6 +59,11 @@ public class Server extends Thread {
                         // create a game using both of them
                         GameModel game = new GameModel(queuedClient, client);
                         ongoingGames.add(game);
+                    }
+
+                    @Override
+                    public void removeClient(ServerClient client) {
+                        connectedClients.remove(client);
                     }
                 }
                 );
