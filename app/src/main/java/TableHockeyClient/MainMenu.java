@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  *
  * @author adnanfahed
  */
-public class MainMenu extends javax.swing.JFrame {
+public final class MainMenu extends javax.swing.JFrame {
 
     /**
      * Creates new form MainMenu
@@ -22,6 +22,7 @@ public class MainMenu extends javax.swing.JFrame {
         initComponents();
 
         pnl_connected.setVisible(false);
+        requestMatchBtnVisibility();
     }
 
     static Client client = null;
@@ -66,7 +67,8 @@ public class MainMenu extends javax.swing.JFrame {
     }
 
     public void requestMatch() {
-        client.requestMatch();
+        String nm = getPlayerName();
+        client.requestMatch(nm);
     }
 
     public String getInputIp() {
@@ -75,6 +77,16 @@ public class MainMenu extends javax.swing.JFrame {
 
     public int getInputPort() {
         return Integer.valueOf(portField.getText());
+    }
+
+    String getPlayerName() {
+        return fld_player_name.getText();
+    }
+
+    void requestMatchBtnVisibility() {
+        String nm = getPlayerName();
+
+        btn_request_match.setEnabled(nm != null && !nm.isEmpty());
     }
 
     /**
@@ -96,8 +108,10 @@ public class MainMenu extends javax.swing.JFrame {
         lbl_connection_state = new javax.swing.JLabel();
         pnl_connected = new javax.swing.JPanel();
         pnl_request_match = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btn_request_match = new javax.swing.JButton();
         lbl_request_match_stat = new javax.swing.JLabel();
+        fld_player_name = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -161,7 +175,7 @@ public class MainMenu extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(lbl_connection_state, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 43, Short.MAX_VALUE)))
+                        .addGap(0, 61, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnl_connectionLayout.setVerticalGroup(
@@ -180,34 +194,55 @@ public class MainMenu extends javax.swing.JFrame {
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
-        jButton1.setText("Request Match");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_request_match.setText("Request Match");
+        btn_request_match.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_request_matchActionPerformed(evt);
             }
         });
 
         lbl_request_match_stat.setText("Not Requested Yet!!");
+
+        fld_player_name.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                fld_player_nameKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                fld_player_nameKeyTyped(evt);
+            }
+        });
+
+        jLabel3.setText("Name:");
 
         javax.swing.GroupLayout pnl_request_matchLayout = new javax.swing.GroupLayout(pnl_request_match);
         pnl_request_match.setLayout(pnl_request_matchLayout);
         pnl_request_matchLayout.setHorizontalGroup(
             pnl_request_matchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_request_matchLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lbl_request_match_stat, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(21, 21, 21)
+                .addGroup(pnl_request_matchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(pnl_request_matchLayout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(fld_player_name, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_request_match, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_request_match_stat, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
         pnl_request_matchLayout.setVerticalGroup(
             pnl_request_matchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnl_request_matchLayout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(lbl_request_match_stat)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnl_request_matchLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(pnl_request_matchLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(lbl_request_match_stat))
-                .addContainerGap(18, Short.MAX_VALUE))
+                    .addComponent(fld_player_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_request_match))
         );
 
         javax.swing.GroupLayout pnl_connectedLayout = new javax.swing.GroupLayout(pnl_connected);
@@ -221,7 +256,7 @@ public class MainMenu extends javax.swing.JFrame {
             .addGroup(pnl_connectedLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnl_request_match, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(215, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout pnl_mainLayout = new javax.swing.GroupLayout(pnl_main);
@@ -269,10 +304,19 @@ public class MainMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_portFieldKeyTyped
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btn_request_matchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_request_matchActionPerformed
         // TODO add your handling code here:
         requestMatch();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btn_request_matchActionPerformed
+
+    private void fld_player_nameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fld_player_nameKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fld_player_nameKeyTyped
+
+    private void fld_player_nameKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_fld_player_nameKeyReleased
+        // TODO add your handling code here:
+        requestMatchBtnVisibility();
+    }//GEN-LAST:event_fld_player_nameKeyReleased
 
     /**
      * @param args the command line arguments
@@ -311,10 +355,12 @@ public class MainMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_connect;
+    private javax.swing.JButton btn_request_match;
+    private javax.swing.JTextField fld_player_name;
     private javax.swing.JTextField ipField;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel lbl_connection_state;
     private javax.swing.JLabel lbl_request_match_stat;
     private javax.swing.JPanel pnl_connected;

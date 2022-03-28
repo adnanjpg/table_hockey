@@ -1,4 +1,3 @@
-
 package TableHockeyServer;
 
 import TableHockey.Position;
@@ -8,14 +7,18 @@ import TableHockey.Position;
  * @author adnanfahed
  */
 public class PlayerModel {
+
     static private int idd = 0;
 
     String id;
     String name;
     private Position position;
+    public ServerClient client;
 
-    public PlayerModel(String name) {
+    public PlayerModel(ServerClient client, String name) {
         id = String.valueOf(idd++);
+        
+        this.client = client;
         this.name = name;
     }
 

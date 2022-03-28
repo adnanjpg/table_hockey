@@ -95,7 +95,7 @@ public class ServerClient extends Thread {
         // switch case for inconstant values for
         // some reason...
         if (inp.title.equals(Consts.requestMatchCommand)) {
-            return handleMatchRequest();
+            return handleMatchRequest(inp);
         }
 
         return StatusCodes.notFound;
@@ -105,8 +105,11 @@ public class ServerClient extends Thread {
     void handleResponse(SocketMessage inp) {
     }
 
-    String handleMatchRequest() {
-        callbacks.requestQueue(this);
+    String handleMatchRequest(SocketMessage inp) {
+        String name = inp.params.get(Consts.paramsPlayerName).toString();
+
+        callbacks.requestQueue(this, name);
+        
         return StatusCodes.success;
     }
 

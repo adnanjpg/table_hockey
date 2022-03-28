@@ -9,5 +9,9 @@ package TableHockey;
  * @author adnanfahed
  */
 public class Consts {
+
     static public String requestMatchCommand = "request_match";
+    
+    static public String paramsPlayerName = "player_name";
+
 }

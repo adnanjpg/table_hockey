@@ -9,6 +9,8 @@ package TableHockeyServer;
  * @author adnanfahed
  */
 public interface ServerClientCallbacks {
-    void requestQueue(ServerClient client);
+
+    void requestQueue(ServerClient client, String name);
+
     void removeClient(ServerClient client);
 }

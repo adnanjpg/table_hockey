@@ -5,15 +5,27 @@
 package TableHockey;
 
 import java.io.Serializable;
+import java.util.Map;
 
 /**
  *
  * @author adnanfahed
  */
-public class SocketMessage implements Serializable{
+public class SocketMessage implements Serializable {
 
     public String title;
+    public Map params;
     public String status;
+
+    public SocketMessage(String title, Map params, String status) {
+        this.title = title;
+        this.params = params;
+        this.status = status;
+    }
+    public SocketMessage(String title, Map params) {
+        this.title = title;
+        this.params = params;
+    }
 
     public SocketMessage(String title, String status) {
         this.title = title;
@@ -24,8 +36,7 @@ public class SocketMessage implements Serializable{
         this.title = title;
     }
 
-    
-   public boolean isSuccess() {
+    public boolean isSuccess() {
         return status.equals(StatusCodes.success);
     }
 }

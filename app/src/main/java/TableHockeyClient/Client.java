@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -40,9 +42,13 @@ public class Client extends Thread {
         }
     }
 
-    public void requestMatch() {
+    public void requestMatch(String name) {
         try {
-            outputStream.writeObject(new SocketMessage((Consts.requestMatchCommand)));
+            Map params = new HashMap();
+            params.put(Consts.paramsPlayerName, name);
+
+            SocketMessage msg = new SocketMessage((Consts.requestMatchCommand), params);
+            outputStream.writeObject(msg);
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
