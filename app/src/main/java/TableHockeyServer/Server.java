@@ -32,8 +32,9 @@ public class Server extends Thread {
         }
     }
 
-    public void StartServer() {
+    public void startServer() {
         this.start();
+        printReleaventInfo();
     }
 
     @Override
@@ -62,12 +63,18 @@ public class Server extends Thread {
                 }
                 );
 
+                System.out.println("A new client on " + newClient.getLogInfo());
+
                 this.connectedClients.add(newClient);
             }
 
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void printReleaventInfo() {
+        System.out.println("Listening on " + serverSocket.getInetAddress().getHostAddress() + ":" + serverSocket.getLocalPort());
     }
 
 }

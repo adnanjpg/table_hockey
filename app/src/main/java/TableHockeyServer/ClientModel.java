@@ -29,4 +29,8 @@ public class ClientModel {
         return socket.getInetAddress().getHostAddress();
     }
 
+    String getLogInfo() {
+        return socket.getInetAddress().getHostAddress() + ":" + socket.getPort();
+    }
+
 }
