@@ -9,6 +9,5 @@ package TableHockeyServer;
  * @author adnanfahed
  */
 public interface ClientCallbacks {
-
-    void request();
+    void requestQueue(ClientModel client);
 }
