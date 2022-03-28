@@ -20,19 +20,23 @@ public class MainMenu extends javax.swing.JFrame {
      */
     public MainMenu() {
         initComponents();
+        
+        lbl_connection_state.setText("Not connected");
     }
 
     static Socket socket = null;
 
     public void connect() {
-        toggleConnectButton(false);
 
         try {
             socket = new Socket(getInputIp(), getInputPort());
+            lbl_connection_state.setText(
+                    "connected to " + socket.getInetAddress().getHostAddress() + ":" + socket.getPort());
         } catch (IOException ex) {
+            lbl_connection_state.setText("an error occured..");
             Logger.getLogger(MainMenu.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            toggleConnectButton(true);
+
         }
     }
 
@@ -42,22 +46,6 @@ public class MainMenu extends javax.swing.JFrame {
 
     public int getInputPort() {
         return Integer.valueOf(portField.getText());
-    }
-
-    public void toggleConnectButton(boolean enable) {
-        btn_connect.setEnabled(enable);
-    }
-
-    public void toggleConnectButton() {
-        boolean enable = true;
-
-        // if the input and the connected port are the same,
-        // disable the connect button 
-        if (getInputIp().equals(socket.getInetAddress().getHostAddress()) && getInputPort() == socket.getPort()) {
-            enable = false;
-        }
-
-        toggleConnectButton(enable);
     }
 
     /**
@@ -75,6 +63,7 @@ public class MainMenu extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         portField = new javax.swing.JTextField();
         btn_connect = new javax.swing.JButton();
+        lbl_connection_state = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -86,12 +75,27 @@ public class MainMenu extends javax.swing.JFrame {
                 ipFieldActionPerformed(evt);
             }
         });
+        ipField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ipFieldKeyTyped(evt);
+            }
+        });
+        ipField.addVetoableChangeListener(new java.beans.VetoableChangeListener() {
+            public void vetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {
+                ipFieldVetoableChange(evt);
+            }
+        });
 
         jLabel2.setText("Port");
 
         portField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 portFieldActionPerformed(evt);
+            }
+        });
+        portField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                portFieldKeyTyped(evt);
             }
         });
 
@@ -111,14 +115,17 @@ public class MainMenu extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_connect, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ipField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(78, 78, 78)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(ipField, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(78, 78, 78)
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lbl_connection_state, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 2, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -132,7 +139,9 @@ public class MainMenu extends javax.swing.JFrame {
                     .addComponent(portField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_connect)
-                .addContainerGap(193, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(lbl_connection_state)
+                .addContainerGap(175, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -147,13 +156,23 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void ipFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ipFieldActionPerformed
         // TODO add your handling code here:
-        toggleConnectButton();
     }//GEN-LAST:event_ipFieldActionPerformed
 
     private void portFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_portFieldActionPerformed
         // TODO add your handling code here:
-        toggleConnectButton();
     }//GEN-LAST:event_portFieldActionPerformed
+
+    private void ipFieldVetoableChange(java.beans.PropertyChangeEvent evt)throws java.beans.PropertyVetoException {//GEN-FIRST:event_ipFieldVetoableChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ipFieldVetoableChange
+
+    private void ipFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ipFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ipFieldKeyTyped
+
+    private void portFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_portFieldKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_portFieldKeyTyped
 
     /**
      * @param args the command line arguments
@@ -196,6 +215,7 @@ public class MainMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel lbl_connection_state;
     private javax.swing.JTextField portField;
     // End of variables declaration//GEN-END:variables
 }
