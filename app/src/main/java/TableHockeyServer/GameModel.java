@@ -16,6 +16,9 @@ public class GameModel extends Thread {
     public GameModel(PlayerModel a, PlayerModel b) {
         this.a = a;
         this.b = b;
+        
+        a.client.startGame();
+        b.client.startGame();
     }
 
     public void runGame() {

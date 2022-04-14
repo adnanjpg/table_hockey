@@ -13,5 +13,7 @@ public class Consts {
     static public String requestMatchCommand = "request_match";
     
     static public String paramsPlayerName = "player_name";
+    
+    static public String startGameCommand = "start_game";
 
 }

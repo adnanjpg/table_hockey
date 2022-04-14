@@ -48,6 +48,13 @@ public final class MainMenu extends javax.swing.JFrame {
                 lbl_connection_state.setText("Disconnected");
                 pnl_connected.setVisible(false);
             }
+
+            @Override
+            public void startGame() {
+                GameScreen scrn = new GameScreen();
+                
+                scrn.setVisible(true);
+            }
         };
 
         try {

@@ -109,8 +109,17 @@ public class ServerClient extends Thread {
         String name = inp.params.get(Consts.paramsPlayerName).toString();
 
         callbacks.requestQueue(this, name);
-        
+
         return StatusCodes.success;
+    }
+
+    void startGame() {
+        SocketMessage out = new SocketMessage(Consts.startGameCommand);
+        try {
+            this.outputStream.writeObject(out);
+        } catch (IOException ex) {
+            Logger.getLogger(ServerClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

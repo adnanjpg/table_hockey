@@ -61,6 +61,8 @@ public class Server extends Thread {
                         // create a game using both of them
                         GameModel game = new GameModel(queuedPlayer, player);
                         ongoingGames.add(game);
+                        
+                        queuedPlayer = null;
                     }
 
                     @Override

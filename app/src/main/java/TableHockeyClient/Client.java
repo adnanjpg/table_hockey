@@ -87,8 +87,15 @@ public class Client extends Thread {
     }
 
     String handleRequest(SocketMessage msg) {
+        if (msg.title.equals(Consts.startGameCommand)) {
+            startGame();
+        }
 
         return null;
+    }
+
+    void startGame() {
+        callbacks.startGame();
     }
 
     void handleResponse(SocketMessage msg) {

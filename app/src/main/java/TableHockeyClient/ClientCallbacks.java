@@ -13,4 +13,6 @@ public interface ClientCallbacks {
     public void setRequestedMatchStatus(boolean b);
 
     public void disconnect();
+    
+    public void startGame();
 }
