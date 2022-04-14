@@ -50,8 +50,8 @@ public final class MainMenu extends javax.swing.JFrame {
             }
 
             @Override
-            public void startGame() {
-                GameScreen scrn = new GameScreen();
+            public void startGame(Socket gameSocket) {
+                GameScreen scrn = new GameScreen(gameSocket);
                 
                 scrn.setVisible(true);
             }

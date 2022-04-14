@@ -14,6 +14,7 @@ import java.util.Map;
 public class SocketMessage implements Serializable {
 
     public String title;
+    public Object data;
     public Map params;
     public String status;
 
@@ -21,7 +22,9 @@ public class SocketMessage implements Serializable {
         this.title = title;
         this.params = params;
         this.status = status;
+
     }
+
     public SocketMessage(String title, Map params) {
         this.title = title;
         this.params = params;
@@ -31,9 +34,16 @@ public class SocketMessage implements Serializable {
         this.title = title;
         this.status = status;
     }
+    public SocketMessage(String title, Object data) {
+        this.title = title;
+        this.data = data;
+    }
 
     public SocketMessage(String title) {
         this.title = title;
+    }
+    public SocketMessage(Object data) {
+        this.data = data;
     }
 
     public boolean isSuccess() {

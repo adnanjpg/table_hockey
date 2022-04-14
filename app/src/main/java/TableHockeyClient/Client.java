@@ -88,14 +88,24 @@ public class Client extends Thread {
 
     String handleRequest(SocketMessage msg) {
         if (msg.title.equals(Consts.startGameCommand)) {
-            startGame();
+
+            // will recieve its port in msg.data
+            try {
+                int port = (int) msg.data;
+                Socket gameSocket = new Socket(socket.getInetAddress().getHostAddress(), port);
+
+                startGame(gameSocket);
+                
+            } catch (Exception ex) {
+                Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
         return null;
     }
 
-    void startGame() {
-        callbacks.startGame();
+    void startGame(Socket gameSocket) {
+        callbacks.startGame(gameSocket);
     }
 
     void handleResponse(SocketMessage msg) {

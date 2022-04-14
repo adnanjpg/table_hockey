@@ -113,8 +113,8 @@ public class ServerClient extends Thread {
         return StatusCodes.success;
     }
 
-    void startGame() {
-        SocketMessage out = new SocketMessage(Consts.startGameCommand);
+    void startGame(int port) {
+        SocketMessage out = new SocketMessage(Consts.startGameCommand, port);
         try {
             this.outputStream.writeObject(out);
         } catch (IOException ex) {

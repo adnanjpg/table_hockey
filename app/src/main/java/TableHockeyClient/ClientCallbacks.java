@@ -4,6 +4,8 @@
  */
 package TableHockeyClient;
 
+import java.net.Socket;
+
 /**
  *
  * @author adnanfahed
@@ -14,5 +16,5 @@ public interface ClientCallbacks {
 
     public void disconnect();
     
-    public void startGame();
+    public void startGame(Socket gameSocket);
 }
