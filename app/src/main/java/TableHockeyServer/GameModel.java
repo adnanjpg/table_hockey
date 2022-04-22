@@ -4,11 +4,9 @@
  */
 package TableHockeyServer;
 
+import TableHockey.BallModel;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,21 +20,29 @@ public class GameModel extends Thread {
     PlayerModel b;
     ServerSocket serverSocket;
 
+    BallModel ball;
+
     public GameModel(PlayerModel a, PlayerModel b) {
         this.a = a;
         this.b = b;
 
-        try {
-            this.serverSocket = new ServerSocket(0);
+        ball = new BallModel();
 
-            
+        try {
+            this.serverSocket = new ServerSocket(5006);
+
+            runGame();
+
+            Thread.sleep(1000);
+
             int port = serverSocket.getLocalPort();
-                    
+
             a.client.startGame(port);
             b.client.startGame(port);
-            
-            runGame();
+
         } catch (IOException ex) {
+            Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(GameModel.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -46,13 +52,15 @@ public class GameModel extends Thread {
         this.start();
     }
 
+    int i = 0;
+
     @Override
     public void run() {
 
         try {
             while (!serverSocket.isClosed()) {
-                Socket socket = serverSocket.accept(); //blocking
-
+                var socket = serverSocket.accept(); //blocking
+                System.out.println("i is" + i++);
             }
 
         } catch (IOException ex) {

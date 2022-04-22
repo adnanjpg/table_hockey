@@ -26,7 +26,7 @@ public class Server extends Thread {
 
     public Server() {
         try {
-            serverSocket = new ServerSocket(0);
+            serverSocket = new ServerSocket(5003);
         } catch (IOException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -63,6 +63,7 @@ public class Server extends Thread {
                         ongoingGames.add(game);
                         
                         queuedPlayer = null;
+                       
                     }
 
                     @Override

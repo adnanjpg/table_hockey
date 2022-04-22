@@ -1,4 +1,4 @@
-package TableHockeyServer;
+package TableHockey;
 
 import TableHockey.Position;
 

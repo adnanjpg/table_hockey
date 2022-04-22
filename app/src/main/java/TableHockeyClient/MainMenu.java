@@ -23,6 +23,9 @@ public final class MainMenu extends javax.swing.JFrame {
 
         pnl_connected.setVisible(false);
         requestMatchBtnVisibility();
+        
+        portField.setText("5003");
+        ipField.setText("0.0.0.0");
     }
 
     static Client client = null;

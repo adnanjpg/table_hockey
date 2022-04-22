@@ -4,12 +4,7 @@
  */
 package TableHockeyClient;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -17,9 +12,7 @@ import java.util.logging.Logger;
  */
 public class GameScreen extends javax.swing.JFrame {
 
-    Socket gameSocket;
-    ObjectOutputStream outputStream;
-    ObjectInputStream inputStream;
+    GameClient client;
 
     /**
      * Creates new form GameScreen
@@ -27,14 +20,8 @@ public class GameScreen extends javax.swing.JFrame {
      * @param gameSocket
      */
     public GameScreen(Socket gameSocket) {
-        this.gameSocket = gameSocket;
+        this.client = new GameClient(gameSocket);
 
-        try {
-            outputStream = new ObjectOutputStream(gameSocket.getOutputStream());
-            inputStream = new ObjectInputStream(gameSocket.getInputStream());
-        } catch (IOException ex) {
-            Logger.getLogger(GameScreen.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
         initComponents();
     }
