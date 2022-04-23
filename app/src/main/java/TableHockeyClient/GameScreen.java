@@ -4,6 +4,7 @@
  */
 package TableHockeyClient;
 
+import TableHockey.BallModel;
 import java.net.Socket;
 
 /**
@@ -14,16 +15,37 @@ public class GameScreen extends javax.swing.JFrame {
 
     GameClient client;
 
+    BallModel ball;
+
+    GamePanel gamePanel;
+
     /**
      * Creates new form GameScreen
      *
      * @param gameSocket
      */
     public GameScreen(Socket gameSocket) {
-        this.client = new GameClient(gameSocket);
+        setup(gameSocket);
 
+        gamePanel = new GamePanel();
+
+        getContentPane().add(gamePanel);
 
         initComponents();
+    }
+
+    void setup(Socket gameSocket) {
+
+        var callbacks = new GameClientCallbacks() {
+            @Override
+            public void setBall(BallModel b) {
+                ball = b;
+                gamePanel.setBall(b);
+
+            }
+        };
+
+        this.client = new GameClient(gameSocket, callbacks);
     }
 
     /**
@@ -36,17 +58,7 @@ public class GameScreen extends javax.swing.JFrame {
     private void initComponents() {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

@@ -15,5 +15,8 @@ public class Consts {
     static public String paramsPlayerName = "player_name";
     
     static public String startGameCommand = "start_game";
+    
+    // in game commands
+    static public String ballPosition = "ball_position";
 
 }

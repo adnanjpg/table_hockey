@@ -1,5 +1,7 @@
 package TableHockey;
 
+import java.io.Serializable;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -8,7 +10,7 @@ package TableHockey;
  *
  * @author adnanfahed
  */
-public class Position {
+public class Position implements Serializable {
 
     private int x;
     private int y;

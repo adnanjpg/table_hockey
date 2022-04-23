@@ -34,6 +34,7 @@ public class SocketMessage implements Serializable {
         this.title = title;
         this.status = status;
     }
+    
     public SocketMessage(String title, Object data) {
         this.title = title;
         this.data = data;
